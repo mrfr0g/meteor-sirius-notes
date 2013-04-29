@@ -1,3 +1,3 @@
 Template.acknowledgements.helpers
 	groups : ->
-		Groups.findWithNotes({type: 'acknowledgements'})
+		Groups.findWithNotes(null, {type: 'acknowledgement'})

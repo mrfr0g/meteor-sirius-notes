@@ -37,11 +37,14 @@ Notes.createNote = (note) ->
 
 Groups = new Meteor.Collection 'groups'
 
-Groups.findWithNotes = (selector = {}) ->
+Groups.findWithNotes = (groupSelector = {}, noteSelector = {}) ->
 	# Join groups and notes, sorting by time descending
-	Groups.find(selector, {sort: {time : -1}}).map (group) ->
+	Groups.find(groupSelector, {sort: {time : -1}}).map (group) ->
 		group.notes = []
-		notes = Notes.find({group: group._id}, {sort: {time : -1}}).fetch()
+		
+		noteSelector = _.extend(noteSelector, {group: group._id})
+
+		notes = Notes.find(noteSelector, {sort: {time : -1}}).fetch()
 		if notes.length
 			group.notes = _.inGroupsOf(notes, 3, {})
 		group
