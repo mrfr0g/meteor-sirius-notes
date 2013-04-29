@@ -1,0 +1,108 @@
+<head>
+	<title>Sirius Notes</title>
+	<script type="text/javascript" src="/jquery.selection.js"></script>
+</head>
+
+<body>
+	{{> toolbar}}
+	<div class="{{currentPage}}Page">
+	{{renderPage}}
+	</div>
+</body>
+
+<template name="notes">
+	<div class="notes container">
+		{{> noteEntry}}
+		{{> byGroup groups}}
+	</div>
+</template>
+
+<template name="acknowledgements">
+	<div class="notes container">
+		{{> byGroup groups}}
+	</div>
+</template>
+
+<template name="toolbar">
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<div class="row">
+					<div class="span12">
+						<a class="brand" href="#">Sirius Notes</a>
+						<ul class="nav navtabs">
+							{{#each menu}}
+							<li class="{{active this}}"><a href="{{path}}">{{label}}</a></li>
+							{{/each}}
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
+
+<template name="noteEntry">
+	<div class="noteEntry row-fluid">
+		{{> note}}
+	</div>
+</template>
+
+<template name="note">
+	<section class="span4 note {{{entrance}}}">
+		<div class="row">
+			{{> noteEditor this}}	
+		</div>
+		<div class="row">
+			<footer class="span12">
+				{{#if time}}
+				<div class="pull-left timestamp"><em>{{timestamp time}}</em></div>
+				<button class="btn btn-danger pull-right deleteButton" type="button" tabindex=10>Delete</button>
+				{{else}}
+					{{> groupSelection}}
+					<button id="create" class="btn btn-primary {{visible}} pull-right" type="button" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="SHIFT+ENTER" tabindex=10>Create</button>
+				{{/if}}
+				<div style="clear: both"></div>
+			</footer>
+		</div>
+	</section>
+</template>
+
+<template name="noteEditor">
+	{{#if showEditor}}
+		<textarea data-id="{{_id}}" name="note" class="span12 noteEditor" {{{createNote}}} tabindex=10>{{note}}</textarea>
+	{{else}}
+		<div class="span12 noteEditor" {{{canEditPopover}}} tabindex=10>{{{md}}}</div>
+	{{/if}}
+</template>
+
+<template name="groupSelection">
+	<div id="groupSelectionContainer" class="input-prepend">
+		<span class="add-on"><i class="icon icon-star"></i></span>
+		<input type="text" name="groupSelection" id="groupSelection" placeholder="Current Time" tabindex=10/>
+	</div>
+</template>
+
+<template name="byGroup">
+	{{#each this}}
+		{{> notesLayout this}}
+	{{/each}}
+</template>
+
+<template name="notesLayout">
+	<div class="row-fluid">
+		<section class="notesCollection span12">
+			{{#isolate}}
+			<h1 {{{canEditPopover}}} {{{canEditGroup}}} tabindex=10 name="label"> {{label this.time}}</h1>
+			{{/isolate}}
+			
+			{{#each notes}}
+				<div class="row">
+				{{#each this}}
+					{{> note this}}
+				{{/each}}
+				</div>
+			{{/each}}
+		</section>
+	</div>
+</template>

@@ -1,0 +1,14 @@
+{
+  "meteor": {
+    "git": "https://github.com/meteor/meteor.git",
+    "tag": "v0.5.8"
+  },
+  "packages": {
+    "router": {},
+    "moment": {},
+    "marked": {},
+    "animate-css": {},
+    "jquery-ui": {},
+    "jquery-ui-bootstrap": {}
+  }
+}

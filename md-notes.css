@@ -1,0 +1,67 @@
+body {
+	/* Allow padding for toolbar */
+	padding-top: 60px;
+	background: url('/polaroid/polaroid.png');
+}
+
+.notes section h1:focus {
+	background-color: rgba(0, 88, 150, .1);
+	outline: none;
+}
+
+.notesCollection > .row {
+	margin-bottom: 10px;
+}
+.notesCollection > .row, .note > .row {
+	margin-left: 0;
+}
+.notesCollection > h1 {
+	font-size: 1.5em;
+	border-bottom: 1px solid #333;
+}
+
+.noteEntry .note {
+	float: none !important;
+	margin: 0 auto !important;
+}
+
+.note {
+	border-radius: 3px;
+	border: 1px solid #ccc;
+}
+.note .noteEditor {
+	min-height: 100px;
+	padding: 5px;
+	border: 0;
+	margin: 0;
+	resize: none;
+	background-color: #fff;
+} 
+.note textarea.noteEditor {
+	background-image: url('/66x40_really_light_md.png');
+	background-repeat: no-repeat;
+	background-position: center;
+} 
+.note footer {
+	height: 40px;
+	line-height: 30px;
+	background-color: #eee;
+	padding: 5px;
+}
+.note footer .timestamp em {
+	font-size: .85em;
+}
+.note .deleteButton {
+	display: none;
+}
+.notesPage .note:hover .deleteButton {
+	display: block;
+}
+.note.activeNote .deleteButton {
+	display: none;
+}
+
+/* typeahead, input-append/input-prepend resets font-size to 0  */
+.tt-suggestion {
+	font-size: 14px !important;
+}
