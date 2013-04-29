@@ -20,7 +20,7 @@ Meteor.startup ->
 Template.groupSelection.rendered = ->
 	$('#groupSelection').autocomplete
 		select : (event, ui) ->
-			Session.set 'activeGroupID', ui._id
+			Session.set 'activeGroupID', ui.item._id
 		source : (req, res) ->
 			# Create a temporary collection to search
 			# @todo figure out a better way to do this dude... this is sad
