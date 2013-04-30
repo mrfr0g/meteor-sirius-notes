@@ -12,20 +12,35 @@
 
 <template name="notes">
 	<div class="notes container">
-		<section class="span4 note">
-			<div class="row">
-				{{> noteEditor}}
-			</div>
-			<div class="row">
-				<footer class="span12">
-					{{> groupSelection}}
-					<button id="create" class="btn btn-primary pull-right" type="button" tabindex=10>Create</button>
-					<div style="clear: both"></div>
-				</footer>
-			</div>
-		</section>
+		{{! note creator}}
+		<div class="row-fluid">
+			<section class="span4 note noteCreator">
+				<div class="row">
+					{{> noteEditor}}
+				</div>
+				<div class="row">
+					<footer class="span12">
+						{{> groupSelection}}
+						<button id="create" class="btn btn-primary pull-right" type="button" tabindex=10>Create</button>
+						<div style="clear: both"></div>
+					</footer>
+				</div>
+			</section>
+		</div>
+		{{! notes}}
+		{{#each groups}}
+			{{> groupSection}}
+		{{/each}}
 	</div>
 </template>
+
+<template name="groupSelection">
+	<div id="groupSelectionContainer" class="input-prepend">
+		<span class="add-on"><i class="icon icon-star"></i></span>
+		<input type="text" name="groupSelection" id="groupSelection" placeholder="Current Time" tabindex=10/>
+	</div>
+</template>
+
 
 <template name="acknowledgements">
 	<div class="notes container">
@@ -53,16 +68,39 @@
 </template>
 	
 <template name="noteEditor">
-	<textarea data-id="{{_id}}" name="note" class="span12 noteEditor" {{{createNote}}} tabindex=10>{{note}}</textarea>
+	<textarea autofocus data-id="{{_id}}" name="note" class="span12 noteEditor" {{{createNote}}} tabindex=10>{{note}}</textarea>
 </template>
 
 <template name="noteView">
 	<div class="span12 noteEditor" {{{canEditPopover}}} tabindex=10>{{{md}}}</div>
 </template>
 
-<template name="groupSelection">
-	<div id="groupSelectionContainer" class="input-prepend">
-		<span class="add-on"><i class="icon icon-star"></i></span>
-		<input type="text" name="groupSelection" id="groupSelection" placeholder="Current Time" tabindex=10/>
+<template name="groupSection">
+	<div class="row-fluid">
+		<section class="notesCollection span12">
+			<h1 tabindex=10 name="label" contentEditable="true">{{label}}</h1>
+			{{#each notes}}
+				<div class="row">
+					{{#each this}}
+						{{> note}}
+					{{/each}}
+				</div>
+			{{/each}}
+		</section>
 	</div>
+</template>
+
+<template name="note">
+	<section class="span4 note {{{entrance}}}">
+		<div class="row">
+			{{{viewOrComponent}}}
+		</div>
+		<div class="row">
+			<footer class="span12">
+				<div class="pull-left timestamp"><em>{{timestamp}}</em></div>
+				<button class="btn btn-danger pull-right deleteButton" type="button" tabindex=10>Delete</button>
+				<div style="clear: both"></div>
+			</footer>
+		</div>
+	</section>
 </template>

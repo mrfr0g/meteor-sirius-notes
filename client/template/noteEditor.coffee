@@ -1,27 +1,32 @@
 Template.noteEditor.events
-	'keydown textarea.noteEditor' : (event, template) ->
-		# ⌘+],CTRL+] as tab replacement
+	# Focus on main editor, clear the active editor
+	'focus .noteEditor' : ->
+		if not @_id
+			Session.set 'activeNoteID', null
+
+	# ⌘+],CTRL+] as tab replacement	
+	'keydown .noteEditor' : (event) ->
 		if (event.metaKey or event.ctrlKey) and event.which is 221
 			event.preventDefault()
-			$(event.target).selection('insert', {
+			$(event.target).selection 'insert',
 				text: '\t',
 				mode: 'before'
-			})
 
-	'focus .noteEditor' : (event, template) ->
-		Session.set('activeId', @_id) if Meteor.Router.page() is 'notes'
+	# Enable shift+enter shortcut save on editor/groupSelection field
+	'keypress textarea.noteEditor, keypress #groupSelection' : (e, template) ->
+		if e.shiftKey and e.which is 13
+			e.preventDefault()
+			$editor = $(template.find('textarea.noteEditor'))
 
-Template.noteEditor.helpers
-	showEditor : ->
-		not @_id or Session.get('activeId') is @_id
-	createNote : ->
-		if not @_id
-			'id="createNote"'
+			if Session.get 'activeNoteID'
+				Notes.update(
+					Session.get('activeNoteID'),
+					$set : 
+						note : $editor.val()
+						time : moment().unix()
+					)
+			else
+				Notes.createNote($editor.val())
+				$editor.val('')
 
-Template.noteEditor.rendered = ->
-	activeId = Session.get 'activeId'
-	if activeId
-		$(this.find("textarea[data-id=#{activeId}]")).focus()
-
-# Template.noteEditor.created = ->
-# 	console.log @data
+			$('.noteCreator textarea').focus()

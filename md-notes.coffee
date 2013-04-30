@@ -17,7 +17,7 @@ Notes.createNote = (note) ->
 	label = $('#groupSelection').val()
 
 	if activeGroup
-		activeGroupLabel = Template.byGroup._tmpl_data.helpers.label.call(activeGroup, activeGroup.time)
+		activeGroupLabel = Template.groupSection.label(activeGroup)
 
 	if not activeGroup or activeGroupLabel isnt label
 		groupRecord = 
@@ -27,7 +27,7 @@ Notes.createNote = (note) ->
 		activeGroupID = Groups.insert groupRecord
 
 		Session.set 'activeGroupID', activeGroupID
-		Session.set 'activeGroupLabel', Template.byGroup._tmpl_data.helpers.label.call(groupRecord, timestamp)
+		Session.set 'activeGroupLabel', Template.groupSection.label(groupRecord)
 
 	Notes.insert
 		group : activeGroupID
@@ -88,8 +88,7 @@ if Meteor.isClient
 		'canEditPopover', ->
 			'data-toggle="popover" data-trigger="hover" data-placement="left" data-content="Click to Edit"'
 	)
-	
-Deps.autorun ->
-	if Meteor.isClient
+
+	Meteor.autorun ->
 		Meteor.subscribe 'groups'
 		Meteor.subscribe 'notes'

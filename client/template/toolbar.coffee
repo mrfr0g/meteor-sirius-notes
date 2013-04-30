@@ -17,7 +17,7 @@ Toolbar.find().forEach (item) ->
 	Meteor.Router.add(route)
 
 Meteor.Router.beforeRouting = ->
-	Session.set 'activeId', null
+	Session.set 'activeNoteID', null
 
 Template.toolbar.helpers
 	menu : ->
