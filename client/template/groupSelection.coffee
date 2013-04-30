@@ -1,20 +1,20 @@
-Meteor.startup ->
-	Meteor.autorun ->
-		groups = Groups.find().fetch()
-		if groups.length
-			groups = _.map groups, (group) ->
-				label = Template.byGroup._tmpl_data.helpers.label.call(group, group.time)
-				_id : group._id
-				value : label
+# Meteor.startup ->
+# 	Meteor.autorun ->
+# 		groups = Groups.find().fetch()
+# 		if groups.length
+# 			groups = _.map groups, (group) ->
+# 				label = Template.byGroup._tmpl_data.helpers.label.call(group, group.time)
+# 				_id : group._id
+# 				value : label
 
-			Session.set 'autocompleteGroups', groups
+# 			Session.set 'autocompleteGroups', groups
 
-	# Update query name computation
-	Meteor.autorun ->
-		activeGroup = Groups.findOne(Session.get('activeGroupID'))
+# 	# Update query name computation
+# 	Meteor.autorun ->
+# 		activeGroup = Groups.findOne(Session.get('activeGroupID'))
 
-		if activeGroup
-			$('#groupSelection').val(Template.byGroup._tmpl_data.helpers.label.call(activeGroup, activeGroup.time))
+# 		if activeGroup
+# 			$('#groupSelection').val(Template.byGroup._tmpl_data.helpers.label.call(activeGroup, activeGroup.time))
 
 
 Template.groupSelection.rendered = ->
