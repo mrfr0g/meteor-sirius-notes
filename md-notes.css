@@ -67,6 +67,9 @@ body {
 }
 
 /* Login Buttons */
+.navbar .loginContainer {
+	margin-top: 5px;
+}
 .navbar #login-buttons .login-button,
 .navbar #login-buttons-google {
 	background: initial;
@@ -75,7 +78,6 @@ body {
 	text-shadow: none;
 	color: #08c;
 	font-size: 14px;
-	margin-top: 2px;
 }
 .navbar #login-buttons .login-button:active,
 .navbar #login-buttons-google:active {
