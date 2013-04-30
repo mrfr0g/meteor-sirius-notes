@@ -8,7 +8,7 @@ Meteor.Collection.prototype.truncate = ->
 # 
 # Collections
 # 
-Notes = new Meteor.Collection 'notes'
+@Notes = new Meteor.Collection 'notes'
 
 Notes.createNote = (note) ->
 	activeGroupID = Session.get 'activeGroupID'
@@ -35,7 +35,7 @@ Notes.createNote = (note) ->
 		time : timestamp
 		isNew : true
 
-Groups = new Meteor.Collection 'groups'
+@Groups = new Meteor.Collection 'groups'
 
 Groups.findWithNotes = (groupSelector = {}, noteSelector = {}) ->
 	# Join groups and notes, sorting by time descending
