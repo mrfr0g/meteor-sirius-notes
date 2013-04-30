@@ -4,7 +4,7 @@ Toolbar = new Meteor.Collection null
 Toolbar.insert
 	'path' : '/'
 	'view' : 'notes'
-	'label' : 'Notes'
+	'label' : 'Home'
 
 Toolbar.insert
 	'path' : '/acknowledgements'

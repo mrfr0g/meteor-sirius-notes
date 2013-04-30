@@ -65,3 +65,25 @@ body {
 .tt-suggestion {
 	font-size: 14px !important;
 }
+
+/* Login Buttons */
+.navbar #login-buttons,
+.navbar #login-buttons-google {
+	background: initial;
+	border: 0;
+	box-shadow: none;
+	text-shadow: none;
+	color: #08c;
+	font-size: 14px;
+	margin-top: 2px;
+}
+.navbar #login-buttons:active,
+.navbar #login-buttons-google:active {
+	background: initial;
+	background-color: #E5E5E5;
+	-webkit-box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
+	-moz-box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
+	box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
+	color: #555;
+	text-shadow: 0 1px 0 #FFF;
+}
