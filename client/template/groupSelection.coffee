@@ -3,7 +3,7 @@ Meteor.startup ->
 		groups = Groups.find().fetch()
 		if groups.length
 			groups = _.map groups, (group) ->
-				label = Template.groupSection.label(group)
+				label = Groups.label(group)
 				_id : group._id
 				value : label
 
@@ -14,7 +14,7 @@ Meteor.startup ->
 		activeGroup = Groups.findOne(Session.get('activeGroupID'))
 
 		if activeGroup
-			$('#groupSelection').val(Template.groupSection.label(activeGroup))
+			$('#groupSelection').val(Groups.label(activeGroup))
 
 
 Template.groupSelection.rendered = ->

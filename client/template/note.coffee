@@ -7,13 +7,13 @@ Template.note.helpers
 	entrance : ->
 		if @isNew
 			# @todo Is this appropriate here? Should the model reassign this value? 
-			setIsNewToFalse = =>
-				Notes.update(@_id, $set: {isNew: false})
+			unsetIsNew = =>
+				Notes.update(@_id, $unset: {isNew: true})
 
-			setTimeout(setIsNewToFalse, 1000)
+			setTimeout(unsetIsNew, 1000)
 			'animated fadeIn'
 
 
 Template.note.events
-	'click .deleteButton' : (event) ->
+	'click .deleteButton' : ->
 		Notes.remove(@_id)

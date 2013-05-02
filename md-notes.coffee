@@ -10,6 +10,19 @@ Meteor.Collection.prototype.truncate = ->
 # 
 @Notes = new Meteor.Collection 'notes'
 
+Notes.allow
+	insert : (userId, doc) ->
+		# no shenan.. shinan.. shenanigans
+		doc.user is userId
+	update : (userId, doc) ->
+		doc.user is userId
+	remove : (userId, doc) ->
+		doc.user is userId
+
+Notes.deny
+	update : (userId, doc, fields) ->
+		_.contains(fields, 'user')
+
 Notes.createNote = (note) ->
 	activeGroupID = Session.get 'activeGroupID'
 	activeGroup = Groups.findOne(activeGroupID)
@@ -17,25 +30,48 @@ Notes.createNote = (note) ->
 	label = $('#groupSelection').val()
 
 	if activeGroup
-		activeGroupLabel = Template.groupSection.label(activeGroup)
+		activeGroupLabel = Groups.label(activeGroup)
 
 	if not activeGroup or activeGroupLabel isnt label
-		groupRecord = 
-			time: timestamp
-			label : label
-
-		activeGroupID = Groups.insert groupRecord
-
-		Session.set 'activeGroupID', activeGroupID
-		Session.set 'activeGroupLabel', Template.groupSection.label(groupRecord)
+		activeGroupID = Groups.createGroup label, true
 
 	Notes.insert
 		group : activeGroupID
 		note : note
 		time : timestamp
 		isNew : true
+		user : Meteor.userId()
 
 @Groups = new Meteor.Collection 'groups'
+
+Groups.allow
+	insert : (userId, doc) ->
+		doc.user is userId
+	update : (userId, doc) ->
+		doc.user is userId
+	remove : (userId, doc) ->
+		doc.user is userId
+
+Groups.deny
+	update : (userId, doc, fields) ->
+		_.contains(fields, 'user') or doc.readOnly
+
+Groups.createGroup = (label, setActive = false) ->
+	groupRecord = 
+		time: moment().unix()
+		label : label
+		user : Meteor.userId()
+
+	activeGroupID = Groups.insert groupRecord
+
+	if setActive
+		Session.set 'activeGroupID', activeGroupID
+
+	activeGroupID
+
+
+Groups.label = (group) ->
+	group.label or 'Started ' + moment.unix(group.time).calendar()
 
 Groups.findWithNotes = (groupSelector = {}, noteSelector = {}) ->
 	# Join groups and notes, sorting by time descending
@@ -74,11 +110,11 @@ if Meteor.isServer
 				Notes.update(id, {$set: {md: marked fields.note}})
 			fields
 
-	# @todo filter by login
 	Meteor.publish 'groups', ->
-		Groups.find()
+		Groups.find({user: {$in: ["public", this.userId]}})
 	Meteor.publish 'notes', ->
-		Notes.find()
+		Notes.find({user: {$in: ["public", this.userId]}})
+
 
 # 
 # Client Logic
