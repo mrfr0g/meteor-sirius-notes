@@ -16,7 +16,7 @@ Template.noteEditor.saveNote = (editor) ->
 
 Template.noteEditor.events
 	# Focus on main editor, clear the active editor
-	'focus .noteEditor' : ->
+	'focus textarea.noteEditor' : ->
 		if not @_id
 			Session.set 'activeNoteID', null
 

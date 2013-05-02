@@ -5,9 +5,6 @@ Template.groupSection.helpers
 		'contentEditable="true"' if not @readOnly
 
 Template.groupSection.events
-	'focus .noteEditor' : ->
-		Session.set('activeNoteID', @_id) if not @readOnly
-
 	'keydown h1, blur h1' : (event) ->
 		editingGroupID = Session.get('editingGroupID')
 		if not editingGroupID
