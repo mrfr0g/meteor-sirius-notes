@@ -41,6 +41,7 @@ body {
 	background-image: url('/66x40_really_light_md.png');
 	background-repeat: no-repeat;
 	background-position: center;
+	color: #333;
 } 
 .note footer {
 	height: 40px;
@@ -51,13 +52,13 @@ body {
 .note footer .timestamp em {
 	font-size: .85em;
 }
-.note .deleteButton {
+.note .manageToolbar {
 	display: none;
 }
-.notesPage .note:hover .deleteButton {
+.notesPage .note:hover .manageToolbar {
 	display: block;
 }
-.note.activeNote .deleteButton {
+.note.activeNote .manageToolbar {
 	display: none;
 }
 

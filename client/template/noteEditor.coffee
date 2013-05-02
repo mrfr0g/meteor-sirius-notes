@@ -1,3 +1,19 @@
+Template.noteEditor.saveNote = (editor) ->
+	$editor = $(editor)
+
+	if Session.get 'activeNoteID'
+		Notes.update(
+			Session.get('activeNoteID'),
+			$set : 
+				note : $editor.val()
+				time : moment().unix()
+			)
+	else
+		Notes.createNote($editor.val())
+		$editor.val('')
+
+	$('.noteCreator textarea').focus()
+
 Template.noteEditor.events
 	# Focus on main editor, clear the active editor
 	'focus .noteEditor' : ->
@@ -16,17 +32,4 @@ Template.noteEditor.events
 	'keypress textarea.noteEditor, keypress #groupSelection' : (e, template) ->
 		if e.shiftKey and e.which is 13
 			e.preventDefault()
-			$editor = $(template.find('textarea.noteEditor'))
-
-			if Session.get 'activeNoteID'
-				Notes.update(
-					Session.get('activeNoteID'),
-					$set : 
-						note : $editor.val()
-						time : moment().unix()
-					)
-			else
-				Notes.createNote($editor.val())
-				$editor.val('')
-
-			$('.noteCreator textarea').focus()
+			Template.noteEditor.saveNote template.find('textarea.noteEditor')

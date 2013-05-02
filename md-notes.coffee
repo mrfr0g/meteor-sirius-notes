@@ -27,6 +27,8 @@ Notes.createNote = (note) ->
 	activeGroupID = Session.get 'activeGroupID'
 	activeGroup = Groups.findOne(activeGroupID)
 	timestamp = moment().unix()
+
+	# @todo Should the model really have knowledge of the view?
 	label = $('#groupSelection').val()
 
 	if activeGroup

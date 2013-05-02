@@ -12,8 +12,22 @@ Template.note.helpers
 
 			setTimeout(unsetIsNew, 1000)
 			'animated fadeIn'
+	action : ->
+		activeNoteID = Session.get 'activeNoteID'
+		if @_id is activeNoteID then 'save' else 'edit'
+	actionLabel : ->
+		activeNoteID = Session.get 'activeNoteID'
+		if @_id is activeNoteID then 'Save' else 'Edit'
+	show : ->
+		activeNoteID = Session.get 'activeNoteID'
+		@_id is activeNoteID and 'display: block'
+
 
 
 Template.note.events
 	'click .deleteButton' : ->
-		Notes.remove(@_id)
+		Notes.remove @_id
+	'click .editButton' : ->
+		Session.set 'activeNoteID', @_id
+	'click .saveButton' : (event, template) ->
+		Template.noteEditor.saveNote template.find('textarea.noteEditor')
