@@ -29,7 +29,7 @@ Template.noteEditor.events
 				mode: 'before'
 
 	# Enable shift+enter shortcut save on editor/groupSelection field
-	'keypress textarea.noteEditor, keypress #groupSelection' : (e, template) ->
-		if e.shiftKey and e.which is 13
-			e.preventDefault()
+	'keypress textarea.noteEditor, keypress #groupSelection' : (event, template) ->
+		if event.shiftKey and event.which is 13
+			event.preventDefault()
 			Template.noteEditor.saveNote template.find('textarea.noteEditor')

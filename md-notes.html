@@ -43,6 +43,10 @@
 
 <template name="acknowledgements">
 	<div class="notes container">
+		{{! acknowledgements}}
+		{{#each groups}}
+			{{> groupSection}}
+		{{/each}}
 	</div>
 </template>
 
@@ -77,7 +81,7 @@
 <template name="groupSection">
 	<div class="row-fluid">
 		<section class="notesCollection span12">
-			<h1 tabindex=10 name="label" contentEditable="true">{{label}}</h1>
+			<h1 tabindex=10 name="label" {{{editable}}}>{{label}}</h1>
 			{{#each notes}}
 				<div class="row">
 					{{#each this}}

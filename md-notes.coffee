@@ -17,11 +17,13 @@ Notes.allow
 	update : (userId, doc) ->
 		doc.user is userId
 	remove : (userId, doc) ->
-		doc.user is userId
+		doc.user is userId and doc.type is 'note'
 
 Notes.deny
 	update : (userId, doc, fields) ->
-		_.contains(fields, 'user')
+		_.contains(fields, 'user') or doc.readOnly
+	remove : (userId, doc) ->
+		doc.readOnly
 
 Notes.createNote = (note) ->
 	activeGroupID = Session.get 'activeGroupID'
@@ -43,6 +45,7 @@ Notes.createNote = (note) ->
 		time : timestamp
 		isNew : true
 		user : Meteor.userId()
+		type: 'note'
 
 @Groups = new Meteor.Collection 'groups'
 
@@ -57,6 +60,8 @@ Groups.allow
 Groups.deny
 	update : (userId, doc, fields) ->
 		_.contains(fields, 'user') or doc.readOnly
+	remove : (userId, doc) ->
+		doc.readOnly
 
 Groups.createGroup = (label, setActive = false) ->
 	groupRecord = 
@@ -77,7 +82,7 @@ Groups.label = (group) ->
 
 Groups.findWithNotes = (groupSelector = {}, noteSelector = {}) ->
 	# Join groups and notes, sorting by time descending
-	Groups.find(groupSelector, {sort: {time : -1}}).map (group) ->
+	groups = Groups.find(groupSelector, {sort: {time : -1}}).map (group) ->
 		group.notes = []
 		
 		noteSelector = _.extend(noteSelector, {group: group._id})
@@ -85,8 +90,10 @@ Groups.findWithNotes = (groupSelector = {}, noteSelector = {}) ->
 		notes = Notes.find(noteSelector, {sort: {time : -1}}).fetch()
 		if notes.length
 			group.notes = _.inGroupsOf(notes, 3, {})
-		group
+			return group
+		false
 
+	_.filter groups, (item) -> item
 
 # 
 # Server Logic

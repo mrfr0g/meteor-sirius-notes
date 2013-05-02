@@ -1,6 +1,6 @@
 Template.notes.helpers
 	groups : ->
-		Groups.findWithNotes()
+		Groups.findWithNotes(null, {type: "note"})
 
 Template.notes.events
 	'click #create' : (event, template) ->
