@@ -15,7 +15,7 @@ Notes.allow
 		# no shenan.. shinan.. shenanigans
 		doc.user is userId
 	update : (userId, doc) ->
-		doc.user is userId
+		doc.user is userId and doc.editable
 	remove : (userId, doc) ->
 		doc.user is userId and doc.type is 'note'
 
@@ -46,6 +46,8 @@ Notes.createNote = (note) ->
 		isNew : true
 		user : Meteor.userId()
 		type: 'note'
+		editable : true
+		readOnly : false
 
 @Groups = new Meteor.Collection 'groups'
 
@@ -53,7 +55,7 @@ Groups.allow
 	insert : (userId, doc) ->
 		doc.user is userId
 	update : (userId, doc) ->
-		doc.user is userId
+		doc.user is userId and doc.editable
 	remove : (userId, doc) ->
 		doc.user is userId
 
@@ -68,6 +70,8 @@ Groups.createGroup = (label, setActive = false) ->
 		time: moment().unix()
 		label : label
 		user : Meteor.userId()
+		editable : true
+		readOnly : false
 
 	activeGroupID = Groups.insert groupRecord
 
@@ -120,9 +124,9 @@ if Meteor.isServer
 			fields
 
 	Meteor.publish 'groups', ->
-		Groups.find({user: {$in: ["public", this.userId]}})
+		Groups.find({$or : [{user: "public"}, {user: this.userId}]})
 	Meteor.publish 'notes', ->
-		Notes.find({user: {$in: ["public", this.userId]}})
+		Notes.find({$or : [{user: "public"}, {user: this.userId}]})
 
 
 # 

@@ -30,12 +30,13 @@ body {
 	border: 1px solid #ccc;
 }
 .note .noteEditor {
-	min-height: 100px;
+	min-height: 150px;
 	padding: 5px;
 	border: 0;
 	margin: 0;
 	resize: none;
 	background-color: #fff;
+	outline: none;
 } 
 .note textarea.noteEditor {
 	background-image: url('/66x40_really_light_md.png');
@@ -52,14 +53,26 @@ body {
 .note footer .timestamp em {
 	font-size: .85em;
 }
+
 .note .manageToolbar {
+	-webkit-animation-duration: .30s;
+	   -moz-animation-duration: .30s;
+	     -o-animation-duration: .30s;
+	        animation-duration: .30s;
+	-webkit-animation-fill-mode: both;
+	   -moz-animation-fill-mode: both;
+	     -o-animation-fill-mode: both;
+	        animation-fill-mode: both;
 	display: none;
 }
-.notesPage .note:hover .manageToolbar {
+/* fadeIn provided by Animate.css */
+.note:hover .manageToolbar {
+	-webkit-animation-name: fadeIn;
+	-moz-animation-name: fadeIn;
+	-ms-animation-name: fadeIn;
+	-o-animation-name: fadeIn;
+	animation-name: fadeIn;
 	display: block;
-}
-.note.activeNote .manageToolbar {
-	display: none;
 }
 
 /* typeahead, input-append/input-prepend resets font-size to 0  */

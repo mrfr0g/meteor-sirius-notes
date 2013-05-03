@@ -1,14 +1,4 @@
 Meteor.startup ->
-	Meteor.autorun ->
-		groups = Groups.find().fetch()
-		if groups.length
-			groups = _.map groups, (group) ->
-				label = Groups.label(group)
-				_id : group._id
-				value : label
-
-			Session.set 'autocompleteGroups', groups
-
 	# Update query name computation
 	Meteor.autorun ->
 		activeGroup = Groups.findOne(Session.get('activeGroupID'))
@@ -22,23 +12,17 @@ Template.groupSelection.rendered = ->
 		select : (event, ui) ->
 			Session.set 'activeGroupID', ui.item._id
 		source : (req, res) ->
-			# Create a temporary collection to search
-			# @todo figure out a better way to do this dude... this is sad
-			# An easy method may be to just use the Groups collection et al
-			autocompleteGroups = Session.get 'autocompleteGroups'
+			groups = Groups.find({editable: true, readOnly: false}).fetch()
+			term = new RegExp(req.term, 'ig')
 
-			groups = new Meteor.Collection null
-			_.each autocompleteGroups, (doc) ->
-				groups.insert doc
+			formattedResult = _.map groups, (item) ->
+				label = Groups.label(item)
+				if term.test label
+					return {
+						_id : item._id
+						value : label
+						label : label
+					}
+				false
 
-			result = groups.find(
-				value : new RegExp(req.term, 'ig')
-			)
-			.fetch()
-
-			formattedResult = _.map result, (item) ->
-				_id : item._id
-				value : item.value
-				label : item.value
-
-			res(formattedResult)
+			res(_.filter(formattedResult, (item) -> item))
