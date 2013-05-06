@@ -5,7 +5,7 @@ Template.noteView.rendered = ->
 
 Template.noteView.events
 	'click' : (event) ->
-		if not $(event.target).is('a') and not @readOnly
+		if not $(event.target).is('a') and @editable
 			Session.set('activeNoteID', @_id)
 
 		event.stopImmediatePropagation()

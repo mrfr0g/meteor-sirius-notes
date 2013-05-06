@@ -50,6 +50,15 @@
 	</div>
 </template>
 
+<template name="welcome">
+	<div class="notes container">
+		{{! welcome notes}}
+		{{#each groups}}
+			{{> groupSection}}
+		{{/each}}
+	</div>	
+</template>
+
 <template name="toolbar">
 	<div class="navbar navbar-fixed-top">
 		<div class="navbar-inner">
@@ -94,14 +103,14 @@
 </template>
 
 <template name="note">
-	<section class="span4 note {{{entrance}}}">
+	<section class="span4 note {{{entrance}}}" data-editable="{{editable}}">
 		<div class="row">
 			{{{viewOrComponent}}}
 		</div>
 		<div class="row">
 			<footer class="span12">
 				<div class="pull-left timestamp"><em>{{timestamp}}</em></div>
-				<div class="pull-right manageToolbar" style="{{show}}">
+				<div class="pull-right manageToolbar" style="{{showToolbar}}">
 					<button class="btn btn-danger deleteButton" type="button" tabindex=10>Delete</button>
 					<button class="btn btn-success {{action}}Button" type="button" tabindex=10>{{actionLabel}}</button>
 				</div>

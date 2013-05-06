@@ -18,7 +18,7 @@ Template.note.helpers
 	actionLabel : ->
 		activeNoteID = Session.get 'activeNoteID'
 		if @_id is activeNoteID then 'Save' else 'Edit'
-	show : ->
+	showToolbar : ->
 		activeNoteID = Session.get 'activeNoteID'
 		@_id is activeNoteID and 'display: block'
 
